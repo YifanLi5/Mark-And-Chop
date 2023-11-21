@@ -9,7 +9,6 @@ import org.osbot.rs07.input.mouse.InventorySlotDestination;
 
 import java.util.HashMap;
 
-
 import static Util.ScriptConstants.SESSION_DROP_SKIP;
 import static Util.ScriptConstants.logsFilter;
 import static java.awt.event.KeyEvent.VK_SHIFT;

@@ -14,8 +14,9 @@ import org.osbot.rs07.utility.ConditionalSleep;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static Util.ScriptConstants.*;
+import static Util.ScriptConstants.CHOP;
 
 public class Chop extends Task {
     class FindTreeAndChopLoop extends ConditionalLoop {
@@ -29,13 +30,12 @@ public class Chop extends Task {
         @Override
         public boolean condition() {
             RS2Object nextTree;
-            List<RS2Object> validTrees = objects.filter(userSelectedTreesFilter);
+            List<RS2Object> validTrees = objects.filter(userSelectedTreesFilter).stream().distinct().collect(Collectors.toList());
             if (validTrees.isEmpty()) {
                 warn("userSelectedTreesFilter returned nothing.");
                 return false;
             }
 
-            // Todo: fix duplicate tree logging
             log(String.format("Found %s valid trees", validTrees.size()));
             nextTree = validTrees.get(random(validTrees.size()));
             if(nextTree == null) {
