@@ -30,7 +30,7 @@ public class ScriptPaint extends BotMouseListener implements Painter {
 
     private static String status;
 
-    private final int cellWidth = 100;
+    private final int cellWidth = 125;
     private final int cellHeight = 50;
 
     private final Rectangle togglePaint = new Rectangle(0, 0, cellWidth, cellHeight);

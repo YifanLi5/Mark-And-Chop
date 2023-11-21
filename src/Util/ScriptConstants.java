@@ -1,10 +1,8 @@
 package Util;
 
 import org.osbot.rs07.api.filter.Filter;
-import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.model.Item;
 
-import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -12,7 +10,6 @@ public class ScriptConstants {
 
     public static final String CHOP = "Chop down";
 
-    public static final int CHOP_ANIM_ID = 867;
     public static final int SESSION_MEAN;
 
     public static final int SESSION_STD_DEV;

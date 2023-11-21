@@ -2,16 +2,12 @@ package Task;
 
 import Paint.ScriptPaint;
 import org.osbot.rs07.Bot;
-import org.osbot.rs07.api.filter.Filter;
-import org.osbot.rs07.api.model.GroundItem;
 import org.osbot.rs07.api.model.Item;
 import org.osbot.rs07.event.EventQueue;
 import org.osbot.rs07.input.mouse.ClickMouseEvent;
 import org.osbot.rs07.input.mouse.InventorySlotDestination;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 
 import static Util.ScriptConstants.SESSION_DROP_SKIP;
@@ -54,7 +50,7 @@ public class Drop extends Task {
 
     @Override
     boolean shouldRun() {
-        boolean doPrematureDrop = myPlayer().getAnimation() == IDLE_ID && inventory.getEmptySlots() < random(4, 12);
+        boolean doPrematureDrop = myPlayer().getAnimation() == IDLE_ANIM_ID && inventory.getEmptySlots() < random(4, 12);
         return (inventory.isFull() || doPrematureDrop) && inventory.contains(logsFilter);
     }
 

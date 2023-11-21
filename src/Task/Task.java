@@ -4,11 +4,10 @@ import org.osbot.rs07.Bot;
 import org.osbot.rs07.script.MethodProvider;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public abstract class Task extends MethodProvider {
     static ArrayList<Task> subclassInstances = new ArrayList<>();
-    static final int IDLE_ID = -1;
+    static final int IDLE_ANIM_ID = -1;
 
     public Task(Bot bot) {
         exchangeContext(bot);

@@ -15,8 +15,7 @@ import org.osbot.rs07.utility.ConditionalSleep;
 import java.util.HashMap;
 import java.util.List;
 
-import static Util.ScriptConstants.CHOP;
-import static Util.ScriptConstants.CHOP_ANIM_ID;
+import static Util.ScriptConstants.*;
 
 public class Chop extends Task {
     class FindTreeAndChopLoop extends ConditionalLoop {
@@ -35,6 +34,9 @@ public class Chop extends Task {
                 warn("userSelectedTreesFilter returned nothing.");
                 return false;
             }
+
+            // Todo: fix duplicate tree logging
+            log(String.format("Found %s valid trees", validTrees.size()));
             nextTree = validTrees.get(random(validTrees.size()));
             if(nextTree == null) {
                 warn("nextTree is null");
@@ -53,7 +55,7 @@ public class Chop extends Task {
             boolean result = new ConditionalSleep(5000) {
                 @Override
                 public boolean condition() {
-                    return myPlayer().getAnimation() == CHOP_ANIM_ID;
+                    return myPlayer().getAnimation() != IDLE_ANIM_ID;
                 }
             }.sleep();
             return !result;
@@ -79,7 +81,7 @@ public class Chop extends Task {
 
     @Override
     boolean shouldRun() {
-        return myPlayer().getAnimation() == Task.IDLE_ID && !inventory.isFull();
+        return myPlayer().getAnimation() == Task.IDLE_ANIM_ID && !inventory.isFull();
     }
 
     @Override
@@ -100,17 +102,13 @@ public class Chop extends Task {
             combat.toggleSpecialAttack(true);
         }
 
-        ScriptPaint.setStatus("Looking for selected trees");
-
         ConditionalLoop loop = new FindTreeAndChopLoop(bot, 5, selectedTrees);
         loop.start();
         if(!loop.getResult()) {
             warn("Unable to find selected trees. Exiting...");
             bot.getScriptExecutor().stop(false);
         }
-        log("Found one!");
         ScriptPaint.setStatus("Chopping...");
-        mouse.moveOutsideScreen();
     }
 }
 

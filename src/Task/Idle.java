@@ -6,15 +6,14 @@ import org.osbot.rs07.input.mouse.MouseDestination;
 import org.osbot.rs07.utility.Condition;
 import org.osbot.rs07.utility.ConditionalSleep;
 
-import static Util.ScriptConstants.CHOP_ANIM_ID;
-import static Util.ScriptConstants.randomSessionGaussian;
+import static Util.ScriptConstants.*;
 
 public class Idle extends Task {
 
-    private final ConditionalSleep sleepWhileChopping = new ConditionalSleep(60000) {
+    private final ConditionalSleep sleepUntilIdle = new ConditionalSleep(60000) {
         @Override
         public boolean condition() {
-            return !(myPlayer().getAnimation() == CHOP_ANIM_ID);
+            return myPlayer().getAnimation() == IDLE_ANIM_ID;
         }
     };
 
@@ -24,15 +23,16 @@ public class Idle extends Task {
 
     @Override
     boolean shouldRun() {
-        return myPlayer().getAnimation() == CHOP_ANIM_ID;
+        return myPlayer().getAnimation() != IDLE_ANIM_ID;
     }
 
     @Override
     public void runTask() throws InterruptedException {
+        mouse.moveOutsideScreen();
         shiftBottlesUp();
         ScriptPaint.setStatus("Chopping (Idle)");
         log("Idling...");
-        sleepWhileChopping.sleep();
+        sleepUntilIdle.sleep();
         if (myPlayer().getAnimation() == -1) {
             ScriptPaint.setStatus("Simulating AFK");
             long idleTime = randomSessionGaussian();
