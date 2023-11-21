@@ -6,7 +6,7 @@ import org.osbot.rs07.input.mouse.MouseDestination;
 import org.osbot.rs07.utility.Condition;
 import org.osbot.rs07.utility.ConditionalSleep;
 
-import static Util.ScriptConstants.*;
+import static Util.ScriptConstants.randomSessionGaussian;
 
 public class Idle extends Task {
 

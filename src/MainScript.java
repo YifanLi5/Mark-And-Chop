@@ -1,11 +1,12 @@
-
 import Paint.ScriptPaint;
 import Paint.TreeSelectionPainter;
-import Task.*;
+import Task.Chop;
+import Task.Drop;
+import Task.Idle;
+import Task.Task;
 import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
-
 
 import java.util.HashMap;
 import java.util.Map;

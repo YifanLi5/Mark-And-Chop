@@ -1,7 +1,6 @@
 package Util;
 
 import org.osbot.rs07.api.filter.Filter;
-import org.osbot.rs07.api.model.InteractableObject;
 import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.model.RS2Object;
 

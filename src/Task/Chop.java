@@ -13,11 +13,10 @@ import org.osbot.rs07.utility.ConditionalLoop;
 import org.osbot.rs07.utility.ConditionalSleep;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static Util.ScriptConstants.*;
+import static Util.ScriptConstants.CHOP;
 
 public class Chop extends Task {
     class FindTreeAndChopLoop extends ConditionalLoop {
