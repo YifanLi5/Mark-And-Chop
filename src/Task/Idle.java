@@ -29,7 +29,6 @@ public class Idle extends Task {
     @Override
     public void runTask() throws InterruptedException {
         mouse.moveOutsideScreen();
-        shiftBottlesUp();
         ScriptPaint.setStatus("Chopping (Idle)");
         log("Idling...");
         sleepUntilIdle.sleep();
@@ -41,23 +40,6 @@ public class Idle extends Task {
         }
     }
 
-    // Swap clue bottles to first slot occupied by a fish
-    private void shiftBottlesUp() throws InterruptedException {
-        int logsIdx = inventory.getSlot(item -> item.getName().endsWith("logs") || item.getName().equals("Logs"));
-        int nestIdx = inventory.getSlotForNameThatContains("Bird nest");
-        if (logsIdx != -1 && nestIdx != -1 && nestIdx > logsIdx) {
-            log("DO NOT RESIZE SCREEN DURING INVENTORY SHIFT OPERATION!!!");
-            sleep(1000);
-            MouseDestination a = inventory.getMouseDestination(logsIdx);
-            MouseDestination b = inventory.getMouseDestination(nestIdx);
-            mouse.continualClick(a, new Condition() {
-                @Override
-                public boolean evaluate() {
-                    return mouse.move(b, true);
-                }
-            });
-            log("Ok to resize.");
-        }
-    }
+
 }
 

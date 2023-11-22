@@ -33,6 +33,11 @@ public class Chop extends Task {
             List<RS2Object> validTrees = objects.filter(userSelectedTreesFilter).stream().distinct().collect(Collectors.toList());
             if (validTrees.isEmpty()) {
                 warn("userSelectedTreesFilter returned nothing.");
+                try {
+                    sleep(random(2500, 5000));
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 return false;
             }
 
