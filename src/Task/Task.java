@@ -12,6 +12,8 @@ public abstract class Task extends MethodProvider {
     public Task(Bot bot) {
         exchangeContext(bot);
         subclassInstances.add(this);
+
+        log("Initialized task class: " + this.getClass().getCanonicalName());
     }
 
     abstract boolean shouldRun();
