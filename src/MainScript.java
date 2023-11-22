@@ -1,9 +1,6 @@
 import Paint.ScriptPaint;
 import Paint.TreeSelectionPainter;
-import Task.Chop;
-import Task.Drop;
-import Task.Idle;
-import Task.Task;
+import Task.*;
 import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
@@ -33,6 +30,7 @@ public class MainScript extends Script {
         log(msgBuffer);
         new ScriptPaint(this);
 
+        new GetBirdNest(this.bot);
         new Chop(this.bot, selectedTrees);
         new Drop(this.bot);
         new Idle(this.bot);
