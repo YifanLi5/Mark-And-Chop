@@ -60,6 +60,7 @@ public class ScriptPaint extends BotMouseListener implements Painter {
             drawGrid(g2d, xpTrackTemplate, cellWidth, cellHeight);
         }
         drawCenteredStr(g2d, togglePaintRectangle, showPaint ? "--Hide--" : "--Show--");
+        blockAccountInfo(g2d);
     }
 
     public static void setStatus(String status) {
@@ -130,6 +131,14 @@ public class ScriptPaint extends BotMouseListener implements Painter {
         g2d.setColor(Color.WHITE);
         g2d.drawString(str, textX, textY);
         g2d.draw(rectangle);
+    }
+
+    private void blockAccountInfo(Graphics2D g) {
+        g.setColor(Color.BLACK);
+        g.fill(script.widgets.get(162, 55).getBounds());
+        g.fill(script.widgets.get(122, 10).getBounds());
+        g.fill(script.widgets.get(160, 9).getBounds());
+        g.fill(script.widgets.get(160, 20).getBounds());
     }
 
     private String formatTime(final long ms) {
