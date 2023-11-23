@@ -1,6 +1,7 @@
 package Task;
 
 
+import Paint.ScriptPaint;
 import org.osbot.rs07.Bot;
 import org.osbot.rs07.api.filter.Filter;
 import org.osbot.rs07.api.model.GroundItem;
@@ -54,7 +55,7 @@ public class GetBirdNest extends Task implements MessageListener {
     @Override
     @SuppressWarnings("unchecked")
     public void runTask() throws InterruptedException {
-
+        ScriptPaint.setStatus("Picking up bird nest");
         List<GroundItem> nests = groundItems.filter(groundItem ->
                 (groundItem.getName().contains("Bird nest") || groundItem.getName().contains("Clue nest"))
                         && groundItem.getId() != 5075);
@@ -96,6 +97,7 @@ public class GetBirdNest extends Task implements MessageListener {
     @Override
     public void onMessage(Message message) {
         if(message.getMessage().contains("A bird's nest falls out") && message.getType().equals(Message.MessageType.GAME)) {
+            log("Detected bird nest message.");
             this.birdNestDetected = true;
         }
     }
