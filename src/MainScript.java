@@ -8,7 +8,7 @@ import org.osbot.rs07.script.ScriptManifest;
 import java.util.HashMap;
 import java.util.Map;
 
-@ScriptManifest(author = "yfoo", name = "Mark N' Chop (debug)", info = "Mark trees with paint, then chop", version = 0.1, logo = "")
+@ScriptManifest(author = "yfoo", name = "Mark N' Chop (debug4)", info = "Mark trees with paint, then chop", version = 1.0, logo = "")
 public class MainScript extends Script {
 
     @Override

@@ -28,5 +28,4 @@ public class ScriptConstants {
     public static int randomSessionGaussian() {
         return (int) Math.abs((new Random().nextGaussian() * SESSION_STD_DEV + SESSION_MEAN));
     }
-
 }

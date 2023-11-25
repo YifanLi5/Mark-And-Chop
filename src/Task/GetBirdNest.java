@@ -3,9 +3,7 @@ package Task;
 
 import Paint.ScriptPaint;
 import org.osbot.rs07.Bot;
-import org.osbot.rs07.api.filter.Filter;
 import org.osbot.rs07.api.model.GroundItem;
-import org.osbot.rs07.api.model.Item;
 import org.osbot.rs07.api.ui.Message;
 import org.osbot.rs07.input.mouse.MouseDestination;
 import org.osbot.rs07.listener.MessageListener;
@@ -15,13 +13,14 @@ import org.osbot.rs07.utility.ConditionalLoop;
 import java.util.List;
 
 public class GetBirdNest extends Task implements MessageListener {
-    class PickUpLoop extends ConditionalLoop {
-        public PickUpLoop(Bot bot, int i) {
+    class DoWhilePickUp extends ConditionalLoop {
+        public DoWhilePickUp(Bot bot, int i) {
             super(bot, i);
         }
 
         @Override
         public boolean condition() {
+            // 5075 is trade-able bird nest, prevent lures
             List<GroundItem> nests = groundItems.filter(groundItem ->
                     (groundItem.getName().contains("Bird nest") || groundItem.getName().contains("Clue nest"))
                             && groundItem.getId() != 5075);
@@ -64,7 +63,7 @@ public class GetBirdNest extends Task implements MessageListener {
             return;
         }
 
-        ConditionalLoop pickUpLoop = new PickUpLoop(this.bot, 5);
+        ConditionalLoop pickUpLoop = new Task.GetBirdNest.DoWhilePickUp(this.bot, 5);
         pickUpLoop.start();
 
         if(!pickUpLoop.getResult()) {

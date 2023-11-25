@@ -97,7 +97,6 @@ public class Chop extends Task {
             bot.getScriptExecutor().stop(false);
         }
 
-
         if (inventory.isItemSelected()) {
             inventory.deselectItem();
         }

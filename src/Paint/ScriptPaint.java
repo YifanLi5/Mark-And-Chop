@@ -1,5 +1,6 @@
 package Paint;
 
+import org.osbot.rs07.api.ui.RS2Widget;
 import org.osbot.rs07.api.ui.Skill;
 import org.osbot.rs07.api.util.ExperienceTracker;
 import org.osbot.rs07.canvas.paint.Painter;
@@ -13,12 +14,13 @@ public class ScriptPaint extends BotMouseListener implements Painter {
     private final Script script;
     private final long startTime;
     private final ExperienceTracker tracker;
-    private final int wcLvlStart;
+    private final int startingWCLvl;
+
     private final String[][] xpTrackTemplate = {
-        {"", "+XP (XP/H)", "LVL (+)"},
-        {"Woodcutting", "", ""},
-        {"Status Placeholder"},
-        {"Timer Placeholder"}
+            {"", "+XP (XP/H)", "LVL (+)"},
+            {"Woodcutting", "[1][1]", "[1][2]"},
+            {"[2][0]"},
+            {"[3][0]"}
     };
     private static String status;
     private final int cellWidth = 125;
@@ -44,7 +46,7 @@ public class ScriptPaint extends BotMouseListener implements Painter {
         script.getBot().addPainter(this);
         script.getBot().addMouseListener(this);
 
-        wcLvlStart = script.skills.getStatic(Skill.WOODCUTTING);
+        startingWCLvl = script.skills.getStatic(Skill.WOODCUTTING);
 
         startTime = System.currentTimeMillis();
         tracker = script.getExperienceTracker();
@@ -58,9 +60,10 @@ public class ScriptPaint extends BotMouseListener implements Painter {
         if(showPaint) {
             populatePlaceholderArray();
             drawGrid(g2d, xpTrackTemplate, cellWidth, cellHeight);
+            blockAccountInfo(g2d);
         }
         drawCenteredStr(g2d, togglePaintRectangle, showPaint ? "--Hide--" : "--Show--");
-        blockAccountInfo(g2d);
+
     }
 
     public static void setStatus(String status) {
@@ -69,13 +72,14 @@ public class ScriptPaint extends BotMouseListener implements Painter {
 
     private void populatePlaceholderArray() {
         xpTrackTemplate[1][1] = String.format("+%s (%s)", formatNumber(tracker.getGainedXP(Skill.WOODCUTTING)), formatNumber(tracker.getGainedXPPerHour(Skill.WOODCUTTING)));
-        xpTrackTemplate[1][2] = String.format("%s (+%s)", wcLvlStart, tracker.getGainedLevels(Skill.WOODCUTTING));
+        xpTrackTemplate[1][2] = String.format("%s (+%s)", startingWCLvl, tracker.getGainedLevels(Skill.WOODCUTTING));
+
         xpTrackTemplate[2][0] = String.format("Status: %s", status);
         xpTrackTemplate[3][0] = formatTime(System.currentTimeMillis() - startTime);
     }
 
 
-    private void drawGrid(Graphics2D g, String[][] data, int minCellWidth, int cellHeight) {
+    private void drawGrid(Graphics2D g, String[][] data, int cellWidth, int cellHeight) {
         g.setFont(font);
         g.setColor(GRID_BG); //Background Color of Grid
         int maxNumCols = 0;
@@ -83,25 +87,28 @@ public class ScriptPaint extends BotMouseListener implements Painter {
             maxNumCols = Math.max(maxNumCols, row.length);
         }
         if(gridCanvas == null)
-            gridCanvas = new Rectangle(minCellWidth * maxNumCols, cellHeight * data.length);
+            gridCanvas = new Rectangle(cellWidth * maxNumCols, cellHeight * data.length);
         g.fill(gridCanvas);
         g.setColor(Color.WHITE); // Color of Text and Grid lines
         g.draw(gridCanvas);
 
+
+        // draw the horizontal lines
         for (int i = 0; i <=  data.length; i++) {
             int y = i * cellHeight;
-            g.drawLine(0, y, minCellWidth * maxNumCols, y);
+            g.drawLine(0, y, cellWidth * maxNumCols, y);
         }
 
         for(int row = 0; row < data.length; row++) {
             int numElementsInRow = data[row].length;
 
             for(int col = 0; col < numElementsInRow; col++) {
+                // draw the strings in the right positions
                 int textX = col * (gridCanvas.width / numElementsInRow) + (gridCanvas.width / (numElementsInRow*2) - g.getFontMetrics().stringWidth(data[row][col]) / 2);
-
                 int textY = row * (gridCanvas.height / data.length) + (gridCanvas.height / (data.length*2)) - g.getFontMetrics(font).getHeight() / 2 + g.getFontMetrics().getAscent();
                 g.drawString(data[row][col], textX, textY);
 
+                // draw the vertical lines. Dividing each row into {numElementsInRow} sections
                 for(int i = 0; i < numElementsInRow - 1; i++) {
                     int x = col * (gridCanvas.width / numElementsInRow);
                     g.drawLine(x, row * cellHeight, x, row * cellHeight + cellHeight);
@@ -134,11 +141,26 @@ public class ScriptPaint extends BotMouseListener implements Painter {
     }
 
     private void blockAccountInfo(Graphics2D g) {
+        // blocks chat window, total XP (if toggled visible), HP, Prayer
+        final int[][] widgetRootAndChild = new int[][] {
+                {162, 35},
+                {122, 10},
+                {160, 9},
+                {160, 20},
+        };
+        final RS2Widget[] accountInfoWidgets = new RS2Widget[widgetRootAndChild.length];
+
+        for(int idx = 0; idx < widgetRootAndChild.length; idx++) {
+            accountInfoWidgets[idx] = script.widgets.get(widgetRootAndChild[idx][0], widgetRootAndChild[idx][1]);
+        }
+
         g.setColor(Color.BLACK);
-        g.fill(script.widgets.get(162, 55).getBounds());
-        g.fill(script.widgets.get(122, 10).getBounds());
-        g.fill(script.widgets.get(160, 9).getBounds());
-        g.fill(script.widgets.get(160, 20).getBounds());
+        for (RS2Widget widget: accountInfoWidgets) {
+            if(widget == null) {
+                continue;
+            }
+            g.fill(widget.getBounds());
+        }
     }
 
     private String formatTime(final long ms) {
