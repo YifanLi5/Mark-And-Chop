@@ -36,7 +36,6 @@ public class Drop extends Task {
     private final static HashMap<Integer, InventorySlotDestination> INVENTORY_SLOT_DESTINATION_MAPPING = new HashMap<>();
 
 
-
     public Drop(Bot bot) {
         super(bot);
         mapInvSlotDestinations();

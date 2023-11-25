@@ -9,6 +9,7 @@ import java.util.Map;
 
 public class UserSelectedTreesFilter implements Filter<RS2Object> {
     HashMap<Position, String> userSelections;
+
     public UserSelectedTreesFilter(HashMap<Position, String> userSelections) {
         this.userSelections = userSelections;
     }
@@ -16,8 +17,8 @@ public class UserSelectedTreesFilter implements Filter<RS2Object> {
     @Override
     public boolean match(RS2Object rs2Object) {
         boolean isMatch = false;
-        for(Map.Entry<Position, String> selection: userSelections.entrySet()) {
-            if(selection.getValue().equals(rs2Object.getName())
+        for (Map.Entry<Position, String> selection : userSelections.entrySet()) {
+            if (selection.getValue().equals(rs2Object.getName())
                     && selection.getKey().equals(rs2Object.getPosition())) {
                 isMatch = true;
                 break;
