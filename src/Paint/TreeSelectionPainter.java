@@ -81,7 +81,7 @@ public class TreeSelectionPainter extends BotMouseListener implements Painter {
         );
 
         if (visibleTrees.isEmpty()) {
-            script.log("Found No trees");
+            script.warn("Found No trees");
             return;
         }
         trees.clear();

@@ -39,7 +39,6 @@ public class Idle extends Task {
         conditionCheckThreshold = random(3, 8);
 
         ScriptPaint.setStatus("Chopping (Idle)");
-        log("Idling...");
         sleepUntilIdle.sleep();
         if (myPlayer().getAnimation() == -1 && !mouse.isOnScreen()) {
             ScriptPaint.setStatus("Simulating AFK");

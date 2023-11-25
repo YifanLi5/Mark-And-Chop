@@ -89,7 +89,6 @@ public class Chop extends Task {
                 return false;
             }
 
-            log(String.format("Found %s valid trees", validTrees.size()));
             nextTree = validTrees.get(random(validTrees.size()));
             if (nextTree == null) {
                 warn("nextTree is null");
