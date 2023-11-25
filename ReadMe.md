@@ -24,7 +24,7 @@ Start with axe equipped or in inventory.
   * ![alt text](tree_selection.jpg)
 
 * XP/Status/Time
-  * ![alt text](woodcutting.jpg)
+  * ![alt text](xp_paint.jpg)
 
 
 
