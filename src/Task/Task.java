@@ -6,8 +6,8 @@ import org.osbot.rs07.script.MethodProvider;
 import java.util.ArrayList;
 
 public abstract class Task extends MethodProvider {
-    static ArrayList<Task> subclassInstances = new ArrayList<>();
     static final int IDLE_ANIM_ID = -1;
+    static ArrayList<Task> subclassInstances = new ArrayList<>();
 
     public Task(Bot bot) {
         exchangeContext(bot);
@@ -15,15 +15,6 @@ public abstract class Task extends MethodProvider {
 
         log("Initialized task class: " + this.getClass().getCanonicalName());
     }
-
-    abstract boolean shouldRun();
-
-    public abstract void runTask() throws InterruptedException;
-
-    int probabilityWeight() {
-        return 1;
-    }
-
 
     public static Task pollNextTask() {
         int weightingSum = 0;
@@ -50,5 +41,13 @@ public abstract class Task extends MethodProvider {
         }
 
         return runnableTasks.get(idx);
+    }
+
+    abstract boolean shouldRun();
+
+    public abstract void runTask() throws InterruptedException;
+
+    int probabilityWeight() {
+        return 1;
     }
 }

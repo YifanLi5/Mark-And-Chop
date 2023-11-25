@@ -8,7 +8,7 @@ import org.osbot.rs07.script.ScriptManifest;
 import java.util.HashMap;
 import java.util.Map;
 
-@ScriptManifest(author = "yfoo", name = "Mark N' Chop (debug4)", info = "Mark trees with paint, then chop", version = 1.0, logo = "")
+@ScriptManifest(author = "yfoo", name = "Mark N' Chop", info = "Mark trees with paint, then chop", version = 1.0, logo = "https://i.imgur.com/rgC03R2.png")
 public class MainScript extends Script {
 
     @Override
@@ -16,7 +16,7 @@ public class MainScript extends Script {
         TreeSelectionPainter treeSelectionPainter = new TreeSelectionPainter(this);
 
         boolean selectionComplete = treeSelectionPainter.isSelectionComplete();
-        while(!selectionComplete) {
+        while (!selectionComplete) {
             sleep(1000);
             selectionComplete = treeSelectionPainter.isSelectionComplete();
         }
@@ -24,7 +24,7 @@ public class MainScript extends Script {
         HashMap<Position, String> selectedTrees = treeSelectionPainter.getSelectedTreesAndCleanupPainter();
         StringBuffer msgBuffer = new StringBuffer();
         msgBuffer.append("Using Trees:\n");
-        for (Map.Entry<Position, String> tree: selectedTrees.entrySet()) {
+        for (Map.Entry<Position, String> tree : selectedTrees.entrySet()) {
             msgBuffer.append(String.format("%s @ %s\n", tree.getValue(), tree.getKey()));
         }
         log(msgBuffer);

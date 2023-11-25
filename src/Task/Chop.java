@@ -19,59 +19,10 @@ import java.util.stream.Collectors;
 import static Util.ScriptConstants.CHOP;
 
 public class Chop extends Task {
-    class FindTreeAndChopLoop extends ConditionalLoop {
-
-        private final UserSelectedTreesFilter userSelectedTreesFilter;
-        public FindTreeAndChopLoop(Bot bot, int i, HashMap<Position, String> selectedTrees) {
-            super(bot, i);
-            this.userSelectedTreesFilter = new UserSelectedTreesFilter(selectedTrees);
-        }
-
-        @Override
-        public boolean condition() {
-            RS2Object nextTree;
-            List<RS2Object> validTrees = objects.filter(userSelectedTreesFilter).stream().distinct().collect(Collectors.toList());
-            if (validTrees.isEmpty()) {
-                warn("userSelectedTreesFilter returned nothing.");
-                try {
-                    sleep(random(2500, 5000));
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                return false;
-            }
-
-            log(String.format("Found %s valid trees", validTrees.size()));
-            nextTree = validTrees.get(random(validTrees.size()));
-            if(nextTree == null) {
-                warn("nextTree is null");
-                return false;
-            }
-
-            Event chopEvent = new InteractionEvent(nextTree, CHOP)
-                    .setOperateCamera(false)
-                    .setBlocking();
-            ScriptPaint.setStatus("Attempting to chop...");
-            execute(chopEvent);
-            if(chopEvent.hasFailed()) {
-                warn("chop event failed. Retrying...");
-            }
-
-            boolean result = new ConditionalSleep(5000) {
-                @Override
-                public boolean condition() {
-                    return myPlayer().getAnimation() != IDLE_ANIM_ID;
-                }
-            }.sleep();
-            return !result;
-        }
-    }
-
     private final Filter<Item> woodcuttingAxeFilter = item -> {
         // Ends with " axe" or " axe (or)"
         return item.getName().matches(".* axe(\\s\\(or\\))?$") && !item.getName().equals("Blessed axe");
     };
-
     private final HashMap<Position, String> selectedTrees;
 
     public Chop(Bot bot, HashMap<Position, String> selectedTrees) {
@@ -108,11 +59,60 @@ public class Chop extends Task {
 
         ConditionalLoop loop = new FindTreeAndChopLoop(bot, 5, selectedTrees);
         loop.start();
-        if(!loop.getResult()) {
+        if (!loop.getResult()) {
             warn("Unable to find selected trees. Exiting...");
             bot.getScriptExecutor().stop(false);
         }
         ScriptPaint.setStatus("Chopping...");
+    }
+
+    class FindTreeAndChopLoop extends ConditionalLoop {
+
+        private final UserSelectedTreesFilter userSelectedTreesFilter;
+
+        public FindTreeAndChopLoop(Bot bot, int i, HashMap<Position, String> selectedTrees) {
+            super(bot, i);
+            this.userSelectedTreesFilter = new UserSelectedTreesFilter(selectedTrees);
+        }
+
+        @Override
+        public boolean condition() {
+            RS2Object nextTree;
+            List<RS2Object> validTrees = objects.filter(userSelectedTreesFilter).stream().distinct().collect(Collectors.toList());
+            if (validTrees.isEmpty()) {
+                warn("userSelectedTreesFilter returned nothing.");
+                try {
+                    sleep(random(2500, 5000));
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                return false;
+            }
+
+            log(String.format("Found %s valid trees", validTrees.size()));
+            nextTree = validTrees.get(random(validTrees.size()));
+            if (nextTree == null) {
+                warn("nextTree is null");
+                return false;
+            }
+
+            Event chopEvent = new InteractionEvent(nextTree, CHOP)
+                    .setOperateCamera(false)
+                    .setBlocking();
+            ScriptPaint.setStatus("Attempting to chop...");
+            execute(chopEvent);
+            if (chopEvent.hasFailed()) {
+                warn("chop event failed. Retrying...");
+            }
+
+            boolean result = new ConditionalSleep(5000) {
+                @Override
+                public boolean condition() {
+                    return myPlayer().getAnimation() != IDLE_ANIM_ID;
+                }
+            }.sleep();
+            return !result;
+        }
     }
 }
 
