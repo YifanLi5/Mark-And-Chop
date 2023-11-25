@@ -21,11 +21,10 @@ Start with axe equipped or in inventory.
 
 ### Paint:
 * Tree Selection (Click to select, Click again to deselect.)
-<br>
-![alt text](tree_selection.jpg)
-<br>
-<br>
+  * ![alt text](tree_selection.jpg)
+
 * XP/Status/Time
-<br>![alt text](woodcutting.jpg)
+  * ![alt text](woodcutting.jpg)
+
 
 
