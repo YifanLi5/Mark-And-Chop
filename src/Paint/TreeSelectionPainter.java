@@ -14,6 +14,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import static Util.ScriptConstants.CHOP;
+
 public class TreeSelectionPainter extends BotMouseListener implements Painter {
 
     private static final Color MY_GREEN = new Color(25, 240, 25, 156);
@@ -75,7 +77,7 @@ public class TreeSelectionPainter extends BotMouseListener implements Painter {
     @SuppressWarnings("unchecked")
     private void queryTrees() {
         List<RS2Object> visibleTrees = script.objects.filter(
-                new ActionFilter<>("Chop down"),
+                new ActionFilter<>(CHOP),
                 rs2Object -> rs2Object.isVisible() &&
                         script.myPlayer().getPosition().distance(rs2Object.getPosition()) <= 10
         );

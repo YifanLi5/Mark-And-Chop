@@ -8,7 +8,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class ScriptConstants {
 
-    public static final String CHOP = "Chop down";
+    public static final String[] CHOP = {"Chop down", "Cut"};
 
     public static final int SESSION_MEAN;
 
