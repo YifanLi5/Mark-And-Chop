@@ -7,6 +7,8 @@ import org.osbot.rs07.api.model.RS2Object;
 import java.util.HashMap;
 import java.util.Map;
 
+import static Util.ScriptConstants.CHOP;
+
 public class UserSelectedTreesFilter implements Filter<RS2Object> {
     HashMap<Position, String> userSelections;
 
@@ -18,7 +20,7 @@ public class UserSelectedTreesFilter implements Filter<RS2Object> {
     public boolean match(RS2Object rs2Object) {
         boolean isMatch = false;
         for (Map.Entry<Position, String> selection : userSelections.entrySet()) {
-            if (selection.getValue().equals(rs2Object.getName())
+            if (rs2Object.hasAction(CHOP)
                     && selection.getKey().equals(rs2Object.getPosition())) {
                 isMatch = true;
                 break;
