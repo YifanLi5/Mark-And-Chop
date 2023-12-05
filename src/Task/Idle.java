@@ -39,7 +39,24 @@ public class Idle extends Task {
         conditionCheckThreshold = random(3, 8);
 
         ScriptPaint.setStatus("Chopping (Idle)");
-        sleepUntilIdle.sleep();
+        camera.setMiddleMouseControl(true);
+        boolean sleepInterrupted;
+        int antiLogoutCounter = 0;
+        int maxSleeps = random(1,4);
+        do {
+            sleepInterrupted = sleepUntilIdle.sleep();
+            antiLogoutCounter += 1;
+            log(String.format("antiLogoutCounter: %d / %d", antiLogoutCounter, maxSleeps));
+            if(antiLogoutCounter >= maxSleeps) {
+                log("anti-logout camera move");
+                ScriptPaint.setStatus("Camera move: Anti-Logout");
+                camera.moveYaw(camera.getYawAngle() + random(-15, 15));
+                antiLogoutCounter = 0;
+                maxSleeps = random(1,4);
+            }
+            ScriptPaint.setStatus("Chopping (Idle)");
+        } while(!sleepInterrupted);
+
         if (myPlayer().getAnimation() == -1 && !mouse.isOnScreen()) {
             ScriptPaint.setStatus("Simulating AFK");
             long idleTime = randomSessionGaussian();

@@ -95,9 +95,7 @@ public class Chop extends Task {
                 return false;
             }
 
-            Event chopEvent = new InteractionEvent(nextTree, CHOP)
-                    .setOperateCamera(false)
-                    .setBlocking();
+            Event chopEvent = new InteractionEvent(nextTree, CHOP);
             ScriptPaint.setStatus("Attempting to chop...");
             execute(chopEvent);
             if (chopEvent.hasFailed()) {
