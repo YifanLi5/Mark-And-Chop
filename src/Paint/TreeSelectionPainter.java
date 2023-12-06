@@ -9,6 +9,7 @@ import org.osbot.rs07.script.Script;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Area;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -20,7 +21,7 @@ public class TreeSelectionPainter extends BotMouseListener implements Painter {
 
     private static final Color MY_GREEN = new Color(25, 240, 25, 156);
     private final Script script;
-    HashMap<RS2Object, Rectangle> trees;
+    HashMap<RS2Object, Area> trees;
     HashSet<RS2Object> selectedTrees;
     private Rectangle finishSelectionRect;
     private boolean selectionComplete = false;
@@ -88,7 +89,7 @@ public class TreeSelectionPainter extends BotMouseListener implements Painter {
         }
         trees.clear();
         for (RS2Object newlyQueriedTree : visibleTrees) {
-            trees.put(newlyQueriedTree, newlyQueriedTree.getModel().getBoundingBox(newlyQueriedTree.getGridX(), newlyQueriedTree.getGridY(), newlyQueriedTree.getZ()));
+            trees.put(newlyQueriedTree, newlyQueriedTree.getModel().getArea(newlyQueriedTree.getGridX(), newlyQueriedTree.getGridY(), newlyQueriedTree.getZ()));
         }
 
     }
@@ -97,7 +98,7 @@ public class TreeSelectionPainter extends BotMouseListener implements Painter {
     public void checkMouseEvent(MouseEvent mouseEvent) {
         if (mouseEvent.getID() == MouseEvent.MOUSE_PRESSED) {
             Point clickPt = mouseEvent.getPoint();
-            for (Map.Entry<RS2Object, Rectangle> treeEntry : trees.entrySet()) {
+            for (Map.Entry<RS2Object, Area> treeEntry : trees.entrySet()) {
                 if (finishSelectionRect != null && finishSelectionRect.contains(clickPt)) {
                     selectionComplete = true;
                     mouseEvent.consume();
